@@ -17,15 +17,21 @@ connectApp();
 const app = express();
 
 // ----> Config all Middleware
-app.use(cors({origin: (address, callback) => {
-    if(!address || adressAllowed.includes(address)) {
-        callback(null, true);
-        console.log("✅ Access granted on your address (%s)", address);
-    } else {
-        callback(new Error("❌ Access refused"));
+app.use(cors({
+    origin: (address, callback) => {
+        if (!address || adressAllowed.includes(address)) {
+            callback(null, true);
+            console.log("✅ Access granted on your address (%s)", address);
+        } else {
+            callback(new Error("❌ Access refused"));
+        }
     }
-}}));
+}));
 app.use(express.json());
+
+app.get("/", (req, res) => {
+    res.send("API is running 🚀");
+});
 
 app.use('/api', routesGeneral);
 
@@ -35,5 +41,5 @@ const server = http.createServer(app);
 initSocket(server);
 
 server.listen(PORT, () => {
-  console.log(`🚀 Serveur + Socket.IO sur http://localhost:${PORT}`);
+    console.log(`🚀 Serveur + Socket.IO sur http://localhost:${PORT}`);
 });
