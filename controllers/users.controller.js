@@ -40,6 +40,7 @@ export const getUsers = async (req, res) => {
       .select(projection)
       .lean(); 
 
+      console.log(`✅ Profile: ${docs.length} docs`);
     // ----> send data to app
     res.json({
       data: docs,
