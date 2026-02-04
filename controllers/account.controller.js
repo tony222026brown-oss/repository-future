@@ -39,9 +39,9 @@ export const getAccount = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(limitNum)
       .select(projection)
-      .lean(); 
+      .lean();
 
-      console.log(`Returning ${docs.length} docs`);
+    console.log(`Returning ${docs.length} docs`);
     // ----> send data to app
     res.json({
       data: docs,
