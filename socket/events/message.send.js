@@ -1,22 +1,20 @@
+/* server/socket/events/message.send.js */
 import { createAndSaveMessage } from "../actions/createAndSaveMessage.js";
 import { markMessageDelivered } from "../actions/markMessageDelivered.js";
 
-/**
- * Register handler for "message:send"
- * - ack: returns { ok, message } or { ok:false, error }
- */
-export function registerMessageSend(io, socket) {
-  socket.on("message:send", async (payload, ack) => {
+export function eventOnPathMessage(io, socket) {
+  socket.on("message:send", async (payload, res) => {
     try {
-      if (!payload || !payload.to) {
-        return ack?.({ ok: false, error: "invalid_payload" });
+      // ----> if data don't exist return to the sender `error`
+      if (!payload || !payload.receiverId) {
+        return res?.({ ok: false, error: "❌ invalid_payload" });
       }
 
-      // Save message in DB
+      // ----> Save message in MongoDB Atlas
       const saved = await createAndSaveMessage(payload, socket.user.userID);
 
-      // Ack to sender with server-side saved message
-      ack?.({
+      // ----> send to app current `response` of `action on MongoDB Atlas`
+      res?.({
         ok: true,
         message: {
           messageId: saved.messageId,
@@ -31,12 +29,14 @@ export function registerMessageSend(io, socket) {
         }
       });
 
-      // emit to recipient room
-      const toRoom = `user:${saved.to}`;
-      io.to(toRoom).emit("message:receive", {
+      // ----> get `receiverId`
+      const receiverIdRroom = `user(${saved.receiverId})`;
+
+      // ----> push `message` to `receiverId` app
+      io.to(receiverIdRroom).emit("message:receive", {
         messageId: saved.messageId,
-        from: saved.from,
-        to: saved.to,
+        senderId: saved.senderId,
+        receiverId: saved.receiverId,
         text: saved.text,
         media: saved.media,
         file: saved.file,
@@ -44,19 +44,24 @@ export function registerMessageSend(io, socket) {
       });
 
       // If recipient online, mark delivered and emit delivered info to sender
-      const socketsOfRecipient = await io.in(toRoom).allSockets();
-      if (socketsOfRecipient && socketsOfRecipient.size > 0) {
+
+      // ----> view if `receiverId` is connected
+      const receiverIsConnected = await io.in(receiverIdRroom).allSockets();
+
+      if (receiverIsConnected && receiverIsConnected.size > 0) {
+        // ----> mark `message` was send in MongoDB Atlas
         const deliveredMsg = await markMessageDelivered(saved.messageId);
-        // notify sender about delivery
-        io.to(`user:${socket.user.userID}`).emit("message:delivered", {
+
+        // ----> notify sender about delivery
+        io.to(`user(${socket.user.userID})`).emit("message:delivered", {
           messageId: deliveredMsg.messageId,
-          tempId: deliveredMsg.tempId,
+          temporaryId: deliveredMsg.temporaryId,
           deliveredAt: deliveredMsg.deliveredAt
         });
       }
     } catch (err) {
-      console.error("event: message:send error", err);
-      ack?.({ ok: false, error: "server_error" });
+      console.error("❌ event: message:send error", err);
+      ack?.({ ok: false, error: "📍 server_error" });
     }
   });
 }

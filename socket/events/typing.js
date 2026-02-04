@@ -1,8 +1,12 @@
-export function registerTyping(io, socket) {
+/* server/socket/evets/typing.js */
+export function eventOnUserTyping(io, socket) {
     socket.on("typing", (payload) => {
-        if (!payload?.to) return;
-        io.to(`user:${payload.to}`).emit("typing", {
-            from: socket.user.userID,
+        // ----> check if `receiverId` exist
+        if (!payload?.receiverId) return;
+
+        // ----> notify `receiverId` `senderId` isTyping
+        io.to(`user(${payload.receiverId})`).emit("typing", {
+            senderId: socket.user.userID,
             isTyping: !!payload.isTyping
         });
     });

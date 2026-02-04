@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 
 const messageSchema = new mongoose.Schema({
-  messageId: { type: String, required: true, unique: true }, // id côté serveur
-  tempId: { type: String }, // id temporaire envoyé par client (pour corrélation ack)
-  from: { type: String, required: true }, // userID de l'envoyeur
-  to: { type: String, required: true },   // userID du receveur
+  messageId: { type: String, required: true, unique: true },
+  temporaryId: { type: String },
+  senderId: { type: String, required: true },
+  receiverId: { type: String, required: true },
   text: { type: String, default: '' },
   media: [{ url: String, mime: String, size: Number }],
   file: [{ url: String, name: String, size: Number }],

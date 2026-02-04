@@ -23,9 +23,7 @@ export const login = async (req, res) => {
       // Création automatique du compte business
       if (!user.hasAccount) {
         user.hasAccount = true;
-        user.type = "business";
-        user.businessName = `${user.name} Business`;
-        user.profileBusiness = 0;
+        user.type = "company";
       }
   
       await user.save();

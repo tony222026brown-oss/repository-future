@@ -1,10 +1,6 @@
+/* server/socket/events/message.history.js */
 import { fetchConversation } from "../actions/fetchConversation.js";
 
-/**
- * Register history fetch.
- * Client emits: socket.emit('message:history', { with: otherUserId, limit, before }, ack)
- * ack => { ok: true, data: [...] } or { ok: false, error: '...' }
- */
 export function registerMessageHistory(io, socket) {
   socket.on("message:history", async (payload, ack) => {
     try {
