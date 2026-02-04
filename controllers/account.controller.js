@@ -41,6 +41,7 @@ export const getAccount = async (req, res) => {
       .select(projection)
       .lean(); 
 
+      console.log(`Returning ${docs.length} docs`);
     // ----> send data to app
     res.json({
       data: docs,
