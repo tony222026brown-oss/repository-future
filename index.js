@@ -6,7 +6,7 @@ import getDotEnv from "./manage/config_dotenv.js";
 import connectApp from "./manage/connect_app.js";
 import adressAllowed from "./manage/allowed_adress.js";
 import routesGeneral from "./routes/general.routes.js";
-import { initSocket } from "./socket.js";
+import { initSocket } from "./socket/socket.js";
 
 // ---> Access all my environnement variables
 getDotEnv();
