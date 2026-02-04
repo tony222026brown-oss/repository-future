@@ -1,4 +1,4 @@
-import Message from "../models/Message.js";
+import Message from "../../models/Message.js";
 
 export async function markMessageDelivered(messageId) {
   const updated = await Message.findOneAndUpdate(

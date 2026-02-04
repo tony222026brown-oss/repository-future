@@ -1,5 +1,5 @@
 /* server/socket/actions/message.js */
-import Message from "../models/Message.js";
+import Message from "../../models/Message.js";
 
 export async function createAndSaveMessage(payload, fromUserId) {
   // payload: { tempId, to, text, media, file, type }

@@ -1,4 +1,4 @@
-import Message from "../models/Message.js";
+import Message from "../../models/Message.js";
 
 /* Fetch conversation between userA and userB - options: { limit = 20, before = new Date() } */
 export async function fetchConversation(userA, userB, options = {}) {
