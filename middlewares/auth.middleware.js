@@ -1,3 +1,4 @@
+/* server/middlewares/auth.middleware.js */
 import { verifyToken } from "../utils/jwt.js";
 
 const authMiddleware = (req, res, next) => {
