@@ -4,6 +4,8 @@ import { markMessageDelivered } from "../actions/markMessageDelivered.js";
 
 export function eventOnPathMessage(io, socket) {
   socket.on("message:send", async (payload, ack) => {
+    console.log("📩 message:send received", payload);
+    
     try {
       // ----> if data don't exist return to the sender `error`
       if (!payload || !payload.receiverId) {
