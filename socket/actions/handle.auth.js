@@ -3,6 +3,8 @@ import { verifyToken } from "../../manage/jwt.js";
 
 export const handleAuth = (socket, next) => {
     try {
+        console.log("🔐 SOCKET HANDSHAKE AUTH =", socket.handshake.auth);
+
         // ----> get `token` from app
         const token = socket.handshake.auth?.token || socket.handshake.headers?.authorization?.split?.(" ")[1];
         
