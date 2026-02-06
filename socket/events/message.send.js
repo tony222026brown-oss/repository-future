@@ -7,7 +7,7 @@ export function eventOnPathMessage(io, socket) {
     try {
       // ----> if data don't exist return to the sender `error`
       if (!payload || !payload.receiverId) {
-        return res?.({ ok: false, error: "❌ invalid_payload" });
+        return res?.({ ok: false, error: "📍 invalid_payload" });
       }
 
       // ----> Save message in MongoDB Atlas
@@ -18,12 +18,13 @@ export function eventOnPathMessage(io, socket) {
         ok: true,
         message: {
           messageId: saved.messageId,
-          tempId: saved.tempId,
-          from: saved.from,
-          to: saved.to,
+          temporaryId: saved.temporaryId,
+          senderId: saved.senderId,
+          receiverId: saved.receiverId,
           text: saved.text,
           media: saved.media,
           file: saved.file,
+          type: saved.type,
           createdAt: saved.createdAt,
           deliveredAt: saved.deliveredAt || null
         }
@@ -60,8 +61,8 @@ export function eventOnPathMessage(io, socket) {
         });
       }
     } catch (err) {
-      console.error("❌ event: message:send error", err);
-      ack?.({ ok: false, error: "📍 server_error" });
+      console.error("❌ error on event(message:send)", err);
+      ack?.({ ok: false, error: "❌ server_error" });
     }
   });
 }

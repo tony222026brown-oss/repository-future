@@ -1,23 +1,28 @@
+/* server/socket/fetchConversation.js */
 import Message from "../../models/Message.js";
 
-/* Fetch conversation between userA and userB - options: { limit = 20, before = new Date() } */
 export async function fetchConversation(userA, userB, options = {}) {
+  // ----> limit of message to recover
   const limit = Math.min(100, options.limit || 20);
-  const before = options.before ? new Date(options.before) : new Date();
 
+  // ----> Date of last message
+  const before = options.dateToFetchMessageBefore ? new Date(options.dateToFetchMessageBefore) : new Date();
+
+  // ----> profil of `message` to recover
   const filter = {
     $or: [
-      { from: userA, to: userB },
-      { from: userB, to: userA }
+      { senderId: userA, receiverId: userB }, 
+      { senderId: userB, receiverId: userA }
     ],
     createdAt: { $lt: before }
   };
 
+  // ----> get `all messages` from MongoDB Atlas
   const messages = await Message.find(filter)
     .sort({ createdAt: -1 })
     .limit(limit)
     .lean();
 
-  // Return chronological order ascending
+  // ----> Return chronological order ascending
   return messages.reverse();
 }

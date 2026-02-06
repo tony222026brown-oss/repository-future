@@ -2,9 +2,9 @@
 import { Server } from "socket.io";
 import { eventOnPathMessage } from "./events/message.send.js";
 import { eventOnUserTyping } from "./events/typing.js";
-import { registerMessageRead } from "./events/message.read.js";
-import { registerMessageHistory } from "./events/message.history.js";
-import { registerDisconnect } from "./events/disconnect.js";
+import { eventOnMessageRead } from "./events/message.read.js";
+import { getMessageFromConversation } from "./events/message.history.js";
+import { disconnectUser } from "./events/disconnect.js";
 import { handleAuth } from "./actions/handle.auth.js";
 
 // ----> create variable accessible every where
@@ -31,9 +31,9 @@ export function initSocket(server) {
     // ---> register all event handlers
     eventOnPathMessage(io, socket);
     eventOnUserTyping(io, socket);
-    registerMessageRead(io, socket);
-    registerMessageHistory(io, socket);
-    registerDisconnect(io, socket);
+    eventOnMessageRead(io, socket);
+    getMessageFromConversation(io, socket);
+    disconnectUser(io, socket);
   });
 
   return io;
