@@ -3,18 +3,18 @@ import { createAndSaveMessage } from "../actions/createAndSaveMessage.js";
 import { markMessageDelivered } from "../actions/markMessageDelivered.js";
 
 export function eventOnPathMessage(io, socket) {
-  socket.on("message:send", async (payload, res) => {
+  socket.on("message:send", async (payload, ack) => {
     try {
       // ----> if data don't exist return to the sender `error`
       if (!payload || !payload.receiverId) {
-        return res?.({ ok: false, error: "📍 invalid_payload" });
+        return ack?.({ ok: false, error: "📍 invalid_payload" });
       }
 
       // ----> Save message in MongoDB Atlas
       const saved = await createAndSaveMessage(payload, socket.user.userID);
 
       // ----> send to app current `response` of `action on MongoDB Atlas`
-      res?.({
+      ack?.({
         ok: true,
         message: {
           messageId: saved.messageId,
