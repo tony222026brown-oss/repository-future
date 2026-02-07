@@ -4,37 +4,65 @@ import messageModel from "../../models/Message.js";
 export function initWatchOnMongoDB(io) {
   try {
     const pipeline = [
-      { $match: { operationType: "insert" } } // uniquement les insert
+      { $match: { operationType: { $in: ["insert", "update", "replace"] } } }
     ];
 
     const changeStream = messageModel.watch(pipeline, { fullDocument: "updateLookup" });
 
     changeStream.on("change", (change) => {
       try {
-        const newMessage = change.fullDocument;
-        if (!newMessage) return;
+        const op = change.operationType;
+        const doc = change.fullDocument;
+        if (!doc) return;
 
-        console.log("✅ New message detected via change stream:", newMessage.messageId || newMessage._id);
+        // room naming must match your app: user(<id>)
+        const receiverRoom = `user(${doc.receiverId})`;
+        const senderRoom = `user(${doc.senderId})`;
 
-        // utilise la même convention de room que le reste du code
-        const receiverRoom = `user(${newMessage.receiverId})`;
+        if (op === "insert" || op === "replace") {
+          console.log("✅ New message detected via change stream:", doc.messageId || doc._id);
 
-        // Construis le payload conforme au client
-        const payload = {
-          messageId: newMessage.messageId,
-          temporaryId: newMessage.temporaryId ?? null,
-          senderId: newMessage.senderId,
-          receiverId: newMessage.receiverId,
-          text: newMessage.text,
-          media: newMessage.media ?? null,
-          file: newMessage.file ?? null,
-          type: newMessage.type,
-          createdAt: newMessage.createdAt
-        };
+          const payload = {
+            messageId: doc.messageId,
+            temporaryId: doc.temporaryId ?? null,
+            senderId: doc.senderId,
+            receiverId: doc.receiverId,
+            text: doc.text,
+            media: doc.media ?? null,
+            file: doc.file ?? null,
+            type: doc.type,
+            createdAt: doc.createdAt
+          };
 
-        // Emit au destinataire (si connecté)
-        io.to(receiverRoom).emit("message:receive", payload);
+          // Emit to receiver
+          io.to(receiverRoom).emit("message:receive", payload);
+        } else if (op === "update") {
+          // change.updateDescription.updatedFields contient les champs modifiés
+          const updated = change.updateDescription?.updatedFields || {};
 
+          // deliveredAt set -> notify sender that message was delivered
+          if (updated.deliveredAt) {
+            console.log("🔔 Message delivered detected:", doc.messageId);
+            io.to(`user(${doc.senderId})`).emit("message:delivered", {
+              messageId: doc.messageId,
+              deliveredAt: doc.deliveredAt
+            });
+          }
+
+          // read or readAt set -> notify sender that message was read
+          // Accept both boolean read:true OR readAt timestamp
+          if (updated.read === true || updated.readAt) {
+            console.log("🔔 Message read detected:", doc.messageId);
+            io.to(`user(${doc.senderId})`).emit("message:read", {
+              messageId: doc.messageId,
+              readAt: doc.readAt || new Date()
+            });
+          }
+
+          // If entire message fields changed and you want to forward to receiver, you can emit message:receive again
+          // (optional) if other fields updated that receiver must see:
+          // if (Object.keys(updated).length > 0) { io.to(receiverRoom).emit('message:update', { messageId: doc.messageId, updatedFields: updated }) }
+        }
       } catch (err) {
         console.error("❌ Error handling changeStream change:", err);
       }
@@ -42,7 +70,7 @@ export function initWatchOnMongoDB(io) {
 
     changeStream.on("error", (err) => {
       console.error("❌ ChangeStream error:", err);
-      // re-try backoff
+      // retry after backoff
       setTimeout(() => initWatchOnMongoDB(io), 5000);
     });
 
@@ -54,11 +82,10 @@ export function initWatchOnMongoDB(io) {
       process.exit(0);
     });
 
-    console.log("🔁 Message ChangeStream initialized");
+    console.log("🔁 Message ChangeStream initialized (insert/update)");
     return changeStream;
   } catch (err) {
     console.error("❌ Failed to init ChangeStream:", err);
     setTimeout(() => initWatchOnMongoDB(io), 5000);
   }
 }
-
