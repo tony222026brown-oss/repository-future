@@ -62,24 +62,3 @@ export function initWatchOnMongoDB(io) {
   }
 }
 
-// ----> watch updates
-messageModel.watch([{ $match: { operationType: 'update' } }], { fullDocument: 'updateLookup' })
-  .on('change', change => {
-    const updated = change.updateDescription?.updatedFields || {};
-    const doc = change.fullDocument;
-
-    if (updated.deliveredAt) {
-      io.to(`user(${doc.senderId})`).emit('message:delivered', {
-        messageId: doc.messageId,
-        deliveredAt: doc.deliveredAt
-      });
-    }
-
-    if (updated.readAt) {
-      io.to(`user(${doc.senderId})`).emit('message:read', {
-        messageId: doc.messageId,
-        readAt: doc.readAt
-      });
-    }
-  });
-
