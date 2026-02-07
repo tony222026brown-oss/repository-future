@@ -9,7 +9,7 @@ const messageSchema = new mongoose.Schema({
   text: { type: String, default: '' },
   media: [{ url: String, mime: String, size: Number }],
   file: [{ url: String, name: String, size: Number }],
-  type: { type: String, enum: ['message','system','image','file'], default: 'message' },
+  type: { type: Number, enum: [0, 1, 2], default: 1 },
   deliveredAt: { type: Date },
   readAt: { type: Date },
   createdAt: { type: Date, default: Date.now }
