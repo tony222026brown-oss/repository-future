@@ -1,7 +1,7 @@
 /* server/socket/change/messages.change.js */
 import messageModel from "../../models/Message.js";
 
-export function initMessageChangeStream(io) {
+export function initWatchOnMongoDB(io) {
   try {
     const pipeline = [
       { $match: { operationType: "insert" } } // uniquement les insert
