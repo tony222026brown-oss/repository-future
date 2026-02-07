@@ -6,6 +6,7 @@ import { eventOnMessageRead } from "./events/message.read.js";
 import { getMessageFromConversation } from "./events/message.history.js";
 import { disconnectUser } from "./events/disconnect.js";
 import { handleAuth } from "./actions/handle.auth.js";
+import { initWatchOnMongoDB } from "./change/message.watch.js";
 
 // ----> create variable accessible every where
 let io;
@@ -19,6 +20,9 @@ export function initSocket(server) {
 
   // ----> send `token.data` on socket
   io.use(handleAuth);
+
+  // ----> watch MongoDB
+  const cs = initWatchOnMongoDB(io);
 
   // ----> manage global actions
   io.on("connection", (socket) => {
