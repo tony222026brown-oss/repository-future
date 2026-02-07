@@ -43,7 +43,7 @@ export function initWatchOnMongoDB(io) {
     changeStream.on("error", (err) => {
       console.error("❌ ChangeStream error:", err);
       // re-try backoff
-      setTimeout(() => initMessageChangeStream(io), 5000);
+      setTimeout(() => initWatchOnMongoDB(io), 5000);
     });
 
     process.on("SIGINT", async () => {
@@ -58,7 +58,7 @@ export function initWatchOnMongoDB(io) {
     return changeStream;
   } catch (err) {
     console.error("❌ Failed to init ChangeStream:", err);
-    setTimeout(() => initMessageChangeStream(io), 5000);
+    setTimeout(() => initWatchOnMongoDB(io), 5000);
   }
 }
 
