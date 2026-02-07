@@ -3,20 +3,20 @@ import { createAndSaveMessage } from "../actions/createAndSaveMessage.js";
 import { markMessageDelivered } from "../actions/markMessageDelivered.js";
 
 export function eventOnPathMessage(io, socket) {
-  socket.on("message:send", async (payload, ack) => {
+  socket.on("message:send", async (payload, res) => {
     console.log("📩 message:send received", payload);
-    
+
     try {
       // ----> if data don't exist return to the sender `error`
       if (!payload || !payload.receiverId) {
-        return ack?.({ ok: false, error: "📍 invalid_payload" });
+        return res?.({ ok: false, error: "📍 invalid_payload" });
       }
 
       // ----> Save message in MongoDB Atlas
       const saved = await createAndSaveMessage(payload, socket.user.userID);
 
       // ----> send to app current `response` of `action on MongoDB Atlas`
-      ack?.({
+      res?.({
         ok: true,
         message: {
           messageId: saved.messageId,
@@ -64,7 +64,7 @@ export function eventOnPathMessage(io, socket) {
       }
     } catch (err) {
       console.error("❌ error on event(message:send)", err);
-      ack?.({ ok: false, error: "❌ server_error" });
+      res?.({ ok: false, error: "❌ server_error" });
     }
   });
 }
