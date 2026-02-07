@@ -1,3 +1,4 @@
+/* server/socket/events/message.read.js */
 import { markMessageRead } from "../actions/markMessageRead.js";
 
 export function eventOnMessageRead(io, socket) {
