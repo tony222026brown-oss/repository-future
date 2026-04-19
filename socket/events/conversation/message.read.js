@@ -1,5 +1,5 @@
 /* server/socket/events/message.read.js */
-import { markMessageRead } from "../actions/markMessageRead.js";
+import { markMessageRead } from "../../actions/conversation/markMessageRead.js";
 
 export function eventOnMessageRead(io, socket) {
   socket.on("message:read", async (payload) => {
