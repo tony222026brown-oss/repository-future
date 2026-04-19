@@ -1,6 +1,6 @@
-/* server/socket/events/message.history.js */
-import { fetchConversation } from "../actions/fetchConversation.js";
+import { fetchConversation } from "../../actions/conversation/fetchConversation.js";
 
+/* server/socket/events/message.history.js */
 export function getMessageFromConversation(io, socket) {
   socket.on("message:history", async (payload, res) => {
     try {
@@ -10,7 +10,6 @@ export function getMessageFromConversation(io, socket) {
       if (!other) return res?.({ ok: false, error: "📍 missing_other" });
 
       const limit = payload?.limit || 20;
-      const before = payload?.before || null;
 
       const messages = await fetchConversation(me, other, { limit, dateToFetchMessageBefore });
 

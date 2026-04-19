@@ -1,5 +1,5 @@
 /* server/socket/fetchConversation.js */
-import Message from "../../models/Message.js";
+import Message from "../../../models/Message.js";
 
 export async function fetchConversation(userA, userB, options = {}) {
   // ----> limit of message to recover

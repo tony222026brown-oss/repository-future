@@ -1,6 +1,6 @@
-/* server/socket/actions/message.js */
-import Message from "../../models/Message.js";
+import Message from "../../../models/Message.js";
 
+/* server/socket/actions/message.js */
 export async function createAndSaveMessage(payload, senderId) {
   try {
     const message = new Message({

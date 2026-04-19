@@ -1,5 +1,5 @@
 /* server/socket/actions/handle.auth.js */
-import { verifyToken } from "../../manage/jwt.js";
+import { verifyToken } from "../../../manage/jwt.js";
 
 export const handleAuth = (socket, next) => {
     try {

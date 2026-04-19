@@ -1,14 +1,14 @@
-/* server/models/User.js */
 import mongoose from "mongoose";
 
+/* server/models/User.js */
 const userSchema = new mongoose.Schema({
   userID: { type: String, required: true, unique: true },
-  type: { type: String, enum: ['company', 'business', 'help', 'era'], required: true, default: 'company' },
+  type: { type: String, enum: ['company', 'help', 'era'], required: true, default: 'company' },
   phone: { type: String, unique: true, sparse: true, default: undefined },
   anonymous: { type: String, required: true, trim: true, default: '' },
   name: { type: String, required: true, trim: true, default: '' },
   gender: { type: String, enum: ['Male', 'Female', 'Organisation', 'Enterprise'], required: true },
-  profileImage: { type: String, default: '' },
+  profileImage: { type: String, default: undefined },
   location: {
     country: { type: String, required: true },
     city: { type: String, required: true },
@@ -20,8 +20,8 @@ const userSchema = new mongoose.Schema({
     default: 'none'
   },
 
-  status: { type: String, default: ''},
-  bio: { type: String, default: ''},
+  status: { type: String, default: undefined },
+  bio: { type: String, default: undefined },
 
   dailyStats: {
     date: { type: Date, default: () => new Date().setHours(0, 0, 0, 0) },
@@ -41,16 +41,15 @@ const userSchema = new mongoose.Schema({
     balance: { type: Number, default: 0 }, // Monnaie de la plateforme
   }, 
 
-  lastSeen: { type: Date, default: Date.now },
   hasAccount: { type: Boolean, default: false },
   isLoggedIn: { type: Boolean, default: false },
-  mood: { type: String, required: false,},
+  mood: { type: String, required: false, default: undefined },
   contentLike: { type: Number, default: 0 },
-  lastMessage: { type: String, required: false, default: '' },
+  lastMessage: { type: String, required: false, default: undefined },
   newMessages: { type: Number, default: 0 },
   lastMessageTime: { type: Date, default: Date.now },
-  sentBox: { type: Boolean, default: false },
-  secure: { type: Boolean, default: false },
+  sentBox: { type: Boolean, default: undefined },
+  secure: { type: Boolean, default: undefined },
 
   companies: [String],
   blockedUsers: [String],
@@ -85,9 +84,6 @@ const userSchema = new mongoose.Schema({
       received: { active: [], expired: [] }
     }
   },
-
-  responsibleId: { type: String, default: undefined},
-  businessId: { type: [String], default: undefined},
 }, {
   timestamps: true // Active createdAt et updatedAt automatiquement
 });

@@ -1,12 +1,12 @@
-/* server/models/Message.js */
 import mongoose from 'mongoose';
 
+/* server/models/Message.js */
 const messageSchema = new mongoose.Schema({
   messageId: { type: String, required: true, unique: true },
   temporaryId: { type: String },
   senderId: { type: String, required: true },
   receiverId: { type: String, required: true },
-  text: { type: String, default: '' },
+  text: { type: String, default: undefined },
   media: [{ url: String, mime: String, size: Number }],
   file: [{ url: String, name: String, size: Number }],
   type: { type: Number, enum: [0, 1, 2], default: 1 },
