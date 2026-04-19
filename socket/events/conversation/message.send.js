@@ -1,6 +1,6 @@
 /* server/socket/events/message.send.js */
 import { createAndSaveMessage } from "../../actions/conversation/createAndSaveMessage.js";
-import { markMessageDelivered } from "../../actions/markMessageDelivered.js";
+import { markMessageDelivered } from "../../actions/conversation/markMessageDelivered.js";
 
 export function eventOnPathMessage(io, socket) {
   socket.on("message:send", async (payload, res) => {
