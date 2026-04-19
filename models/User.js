@@ -44,16 +44,16 @@ const userSchema = new mongoose.Schema({
   hasAccount: { type: Boolean, default: false },
   isLoggedIn: { type: Boolean, default: false },
   mood: { type: String, required: false, default: undefined },
-  contentLike: { type: Number, default: 0 },
+  contentLike: { type: Number, default: undefined },
   lastMessage: { type: String, required: false, default: undefined },
-  newMessages: { type: Number, default: 0 },
+  newMessages: { type: Number, default: undefined },
   lastMessageTime: { type: Date, default: Date.now },
   sentBox: { type: Boolean, default: undefined },
   secure: { type: Boolean, default: undefined },
 
-  companies: [String],
-  blockedUsers: [String],
-  signalEnterprise: [String],
+  companies: { type: [String], default: undefined },
+  blockedUsers: { type: [String], default: undefined },
+  signalEnterprise: { type: [String], default: undefined },
 
   actus: {
     mine: {
@@ -64,10 +64,8 @@ const userSchema = new mongoose.Schema({
       active: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Actu' }],
       expired: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Actu' }],
     }, 
-    default: {
-      mine: { active: [], expired: [] },
-      received: { active: [], expired: [] }
-    }
+    required: false,
+    default: undefined
   },
 
   gifts: {
@@ -79,10 +77,8 @@ const userSchema = new mongoose.Schema({
       active: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Gift' }],
       expired: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Gift' }],
     },
-    default: {
-      mine: { active: [], expired: [] },
-      received: { active: [], expired: [] }
-    }
+    required: false,
+    default: undefined
   },
 }, {
   timestamps: true // Active createdAt et updatedAt automatiquement
