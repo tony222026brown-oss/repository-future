@@ -7,7 +7,6 @@ import connectApp from "./manage/connect_app.js";
 import adressAllowed from "./manage/allowed_adress.js";
 import routesGeneral from "./routes/general.routes.js";
 import { initSocket } from "./socket/socket.js";
-import { seedUsers } from "./required/seed.js";
 
 // ---> Access all my environnement variables
 getDotEnv();
@@ -36,14 +35,6 @@ const PORT = process.env.PORT || 3000;
 
 const server = http.createServer(app);
 initSocket(server);
-
-seedUsers()
-  .then(() => {
-    console.log("✅ Seed terminé");
-  })
-  .catch((err) => {
-    console.error("❌ Seed error:", err);
-  });
 
 server.listen(PORT, () => {
     console.log(`🚀 Serveur + Socket.IO sur http://localhost:${PORT}`);
