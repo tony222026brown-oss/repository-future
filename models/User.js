@@ -56,26 +56,30 @@ const userSchema = new mongoose.Schema({
   signalEnterprise: { type: [String], default: undefined },
 
   actus: {
-    mine: {
-      active: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Actu' }],
-      expired: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Actu' }],
+    type: {
+      mine: {
+        active: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Actu' }],
+        expired: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Actu' }],
+      },
+      received: {
+        active: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Actu' }],
+        expired: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Actu' }],
+      }
     },
-    received: {
-      active: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Actu' }],
-      expired: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Actu' }],
-    }, 
     required: false,
     default: undefined
   },
 
   gifts: {
-    mine: {
-      active: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Gift' }],
-      expired: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Gift' }],
-    },
-    received: {
-      active: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Gift' }],
-      expired: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Gift' }],
+    type: {
+      mine: {
+        active: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Gift' }],
+        expired: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Gift' }],
+      },
+      received: {
+        active: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Gift' }],
+        expired: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Gift' }],
+      }
     },
     required: false,
     default: undefined
