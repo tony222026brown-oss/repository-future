@@ -4,7 +4,7 @@ import Deliver from "../../models/Deliver.js";
 let deliveredWatch = null;
 let restartTimer = null;
 
-export default function checkDeliveredUpdate(io) {
+export function checkDeliveredUpdate(io) {
   if (deliveredWatch) return;
 
   const startWatcher = () => {

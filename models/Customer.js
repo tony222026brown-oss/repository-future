@@ -14,7 +14,7 @@ const customerModel = new mongoose.Schema({
     lastMessage: { type: String, default: undefined },
     giftsReceived: { type: mongoose.Schema.Types.ObjectId, ref: 'Gift' },
     timeExpired: { type: Date, default: Date.now }, // Add plus 2 weeks
-    timeAcquired: { type: date, default: Date.now },
+    timeAcquired: { type: Date, default: Date.now },
     lastModified: { type: Date, default: Date.now },
 }, {
     timestamps: true

@@ -1,7 +1,7 @@
-import { getCustomersHistoricByEmployee } from "../../actions/customers/getCustomersHistoricByEmployee.js";
+import { getCustomersHistoricByEmployee } from "../../actions/customers/getCustomersHistByEmpl.js";
 
 /* server/socket/events/customers/customers.history.js */
-export default function getCustomersHistoric(io, socket) {
+export function getCustomersHistoric(io, socket) {
     socket.on("customers:historic", async (payload, resp) => {
         try {
           if (!payload || typeof payload !== "object") {

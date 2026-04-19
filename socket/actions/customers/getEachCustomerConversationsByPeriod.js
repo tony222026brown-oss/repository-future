@@ -1,4 +1,4 @@
-import Message from "../../models/Message.js";
+import Message from "../../../models/Message.js";
 
 /* server/socket/actions/customers/getEachCustomerConversationByPeriod.js */
 export async function getEachCustomerConversationsByPeriod({

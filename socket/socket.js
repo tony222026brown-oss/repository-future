@@ -8,11 +8,11 @@ import { disconnectUser } from "./events/connection/disconnect.js";
 import { handleAuth } from "./actions/auth/handle.auth.js";
 import { initWatchOnMongoDB } from "./change/message.watch.js";
 import { checkDeliveredUpdate } from "./change/delivered.watch.js";
-import { getDeliveredClientsCohort } from "./events/delivery/delivery.cohort.js";
-import { getDeliveredHistoric } from "./events/delivery/delivery.history.js";
-import { updateDeliveredToBuy } from "./events/delivery/delivery.update.buy.js";
+import getDeliveredClientsCohort from "./events/delivery/delivery.cohort.js";
+import getDeliveredHistoric from "./events/delivery/delivery.history.js";
+import updateDeliveredToBuy from "./events/delivery/delivery.update.buy.js";
 import { getCustomersHistoric } from "./events/customers/customers.history.js";
-import { getEachCustomerConversations } from "./events/customers/customers.messages.js";
+import getEachCustomerConversations from "./events/customers/customers.messages.js";
 
 // ----> create variable accessible every where
 let io;
