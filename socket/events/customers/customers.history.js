@@ -1,4 +1,6 @@
+import Customer from "../../../models/Customer.js";
 import { getCustomersHistoricByEmployee } from "../../actions/customers/getCustomersHistByEmpl.js";
+
 
 /* server/socket/events/customers/customers.history.js */
 export function getCustomersHistoric(io, socket) {
