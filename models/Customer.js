@@ -3,10 +3,10 @@ import mongoose from "mongoose";
 /* server/models/Customer.js */
 const customerModel = new mongoose.Schema({
     id: { type: String, required: true, unique: true },
-    businessId: { type: mongoose.Schema.Types.ObjectId, ref: 'Business' },
-    employeeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee' },
+    businessId: { type: String, required: true },
+    employeeId: { type: String, required: true },
     slotPartOf: { type: Number, required: true, default: 1 },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Deliver' },
+    userId: { type: String, required: true },
     connected: { type: Boolean, default: undefined },
     userName: { type: String, required: true },
     gender: { type: Number, enum: [0, 1, 2, 3], required: true },

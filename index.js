@@ -11,31 +11,38 @@ import { initSocket } from "./socket/socket.js";
 // ---> Access all my environnement variables
 getDotEnv();
 
-// ----> Running server
-connectApp();
-
-const app = express();
-
-// ----> Config all Middleware
-app.use(cors({
-    origin: (address, callback) => {
-        if (!address || adressAllowed.includes(address)) {
+async function startServer() {
+    try {
+      await connectApp(); // ✅ attendre Mongo
+  
+      const app = express();
+  
+      app.use(cors({
+        origin: (address, callback) => {
+          if (!address || adressAllowed.includes(address)) {
             callback(null, true);
-            console.log("✅ Access granted on your address (%s)", address);
-        } else {
+            console.log("✅ Access granted (%s)", address);
+          } else {
             callback(new Error("❌ Access refused"));
+          }
         }
+      }));
+  
+      app.use(express.json());
+      app.use('/api', routesGeneral);
+  
+      const server = http.createServer(app);
+      initSocket(server);
+  
+      const PORT = process.env.PORT || 3000;
+      
+      server.listen(PORT, () => {
+        console.log(`🚀 Serveur sur http://localhost:${PORT}`);
+      });
+  
+    } catch (error) {
+      console.error("❌ Server start error:", error);
     }
-}));
-app.use(express.json());
-
-app.use('/api', routesGeneral);
-
-const PORT = process.env.PORT || 3000;
-
-const server = http.createServer(app);
-initSocket(server);
-
-server.listen(PORT, () => {
-    console.log(`🚀 Serveur + Socket.IO sur http://localhost:${PORT}`);
-});
+  }
+  
+  startServer();

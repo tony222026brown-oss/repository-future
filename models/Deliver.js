@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 /* server/models/Deliver.js */
 const clientDeliverModel = new mongoose.Schema({
     id: { type: String, unique: true, required: true },
-    clientID: { type: mongoose.Schema.Types.ObjectId, ref: 'User', },
+    clientID: { type: String, required: true },
     clientName: { type: String, trim: true, required: true },
     clientGender: { type: Number, enum: [0, 1, 2, 3], required: true },
     clientPhotoProfile: { type: String, default: undefined },
@@ -13,8 +13,8 @@ const clientDeliverModel = new mongoose.Schema({
     isDelivered: { type: Boolean, default: false },
     hasBeenBuy: { type: Boolean, default: false },
     boughtAt: { type: Date, default: Date.now },
-    currentBusinessId: { type: mongoose.Schema.Types.ObjectId, ref: 'Business', },
-    currentEmployeeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee', },
+    currentBusinessId: { type: String, required: true },
+    currentEmployeeId: { type: String, required: true },
     switchAccount: [
         {
             businessId: { type: String, required: true },

@@ -16,7 +16,7 @@ export default function getDeliveredHistoric(io, socket) {
 
          const clientsDelivered = await getClientDelivered(
           payload.businessID, 
-          payload.employeeInChargeID, 
+          payload.employeeID, 
           payload.batch,
         );
 

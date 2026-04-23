@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 /* server/models/Employee.js */
 const employeeModel = new mongoose.Schema({
     id: { type: String, required: true, unique: true },
-    businessId: { type: mongoose.Schema.Types.ObjectId, ref: 'Business' },
-    employeeID: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    businessId: { type: String, required: true },
+    employeeID: { type: String, required: true },
     employeeName: { type: String, required: true },
     employeePhoto: { type: String, default: undefined },
     employeeType: { type: Number, enum: [0, 1, 2], required: true },

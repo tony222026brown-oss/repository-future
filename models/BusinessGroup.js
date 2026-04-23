@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 /* server/models/BusinessGroup.js */
 const businessGroupModel = new mongoose.Schema({
     id: { type: String, required: true, unique: true },
-    businessId: { type: mongoose.Schema.Types.ObjectId, ref: 'Business' },
+    businessId: { type: String, required: true },
     groupID: { type: String, required: true, unique: true },
     groupName: { type: String, required: true },
     groupPhoto: { type: String, default: undefined },

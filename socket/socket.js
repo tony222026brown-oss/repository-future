@@ -21,7 +21,7 @@ let io;
 export function initSocket(server) {
   // ----> grant address from app
   io = new Server(server, {
-    cors: { origin: true, credentials: true },
+    cors: { origin: "*", credentials: true },
   });
 
   // ----> send `token.data` on socket
