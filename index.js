@@ -7,6 +7,7 @@ import connectApp from "./manage/connect_app.js";
 import adressAllowed from "./manage/allowed_adress.js";
 import routesGeneral from "./routes/general.routes.js";
 import { initSocket } from "./socket/socket.js";
+import main from "./script/seed.js";
 
 // ---> Access all my environnement variables
 getDotEnv();
@@ -34,7 +35,12 @@ async function startServer() {
       const server = http.createServer(app);
       initSocket(server);
   
+      // ✅ lancer seed APRÈS Mongo
+      // await main();
+  
       const PORT = process.env.PORT || 3000;
+
+      console.log("🔥🔥🔥 NEW VERSION LOADED 🔥🔥🔥");
       
       server.listen(PORT, () => {
         console.log(`🚀 Serveur sur http://localhost:${PORT}`);

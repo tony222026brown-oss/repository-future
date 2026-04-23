@@ -4,6 +4,7 @@ import { getCustomersHistoricByEmployee } from "../../actions/customers/getCusto
 export function getCustomersHistoric(io, socket) {
   socket.on("customers:historic", async (payload, resp) => {
     console.log("📩 customers:historic payload", payload);
+    console.log("TYPE employeeId:", Customer.schema.path('employeeId').instance);
 
     try {
       console.log("🔥 EVENT customers:historic RECEIVED");
