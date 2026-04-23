@@ -12,7 +12,6 @@ export async function getEachCustomerConversationsByPeriod({
   const to = new Date(dateTo);
 
   return Message.find({
-    businessId,
     $or: [
       { senderId: customerId, receiverId: employeeId },
       { senderId: employeeId, receiverId: customerId },
