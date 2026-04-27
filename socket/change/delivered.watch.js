@@ -30,8 +30,8 @@ export function checkDeliveredUpdate(io) {
 
           const payload = {
             response: 0,
-            message: "Delivery updated",
-            data: doc,
+            message: "✅ New clients where delivered in your server (Box)",
+            datas: doc,
           };
 
           if (employeeId) {

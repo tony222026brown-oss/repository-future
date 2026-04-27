@@ -13,7 +13,18 @@ export default function updateDeliveredToBuy(io, socket) {
                 });
                }
 
-            const update = await actionDeliveredToBuy(payload.groupIDs, payload.employeeId);
+               const { groupIDs, employeeId, businessId } = payload;
+
+               const result = await actionDeliveredToBuy(
+                   groupIDs,
+                   employeeId,
+                   businessId
+               );
+   
+               resp?.({
+                   response: 0,
+                   data: result,
+               });
         } catch (error) {
             let msg = '❌ Server error\nEvent: delivered:update:buy\nPage: server/socket/events/delivery/delivery.history.js';
             console.log(msg, error);
