@@ -4,7 +4,7 @@ import Deliver from '../../../models/Deliver.js';
 export async function updateClientDelivered(listIDs = []) {
     if (!Array.isArray(listIDs) || listIDs.length === 0) return;
 
-    await Deliver.updateMany(
+    const result = await Deliver.updateMany(
         { id: { $in: listIDs } },
         {
             $set: {
@@ -12,5 +12,9 @@ export async function updateClientDelivered(listIDs = []) {
             }
         }
     );
+
+    console.log("UPDATE RESULT:", result);
+
+    return result;
 }
 
